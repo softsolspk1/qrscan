@@ -8,6 +8,14 @@ export async function POST(request: NextRequest) {
     try {
         const { email, password } = await request.json();
 
+        // Debug logging (Safe: only checks presence/length, not values)
+        console.log("Login Attempt:", {
+            emailProvided: !!email,
+            envEmailDefined: !!process.env.ADMIN_EMAIL,
+            envPasswordDefined: !!process.env.ADMIN_PASSWORD,
+            envSecretDefined: !!process.env.AUTH_SECRET,
+        });
+
         if (
             email === process.env.ADMIN_EMAIL &&
             password === process.env.ADMIN_PASSWORD
