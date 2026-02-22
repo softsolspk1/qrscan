@@ -16,14 +16,17 @@ export default async function ScanPage({
         notFound();
     }
 
-    // Increment scan count in background
+    // Increment scan count directly in the database (Vercel-safe)
     try {
-        await fetch(`http://localhost:${process.env.PORT || 3000}/api/scan/${id}`, {
-            method: "POST",
-            cache: "no-store",
+        await db.doctor.update({
+            where: { id },
+            data: {
+                scans: { increment: 1 },
+                lastScanned: new Date(),
+            },
         });
     } catch (e) {
-        // Ignore errors
+        console.error("Scan increment error:", e);
     }
 
     // Prepare Name - Using the requested "Dear {Name}" format

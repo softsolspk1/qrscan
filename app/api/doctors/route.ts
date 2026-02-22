@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { writeFile } from "fs/promises";
-import path from "path";
 import crypto from "crypto";
 
 export async function GET(request: NextRequest) {
@@ -36,11 +34,9 @@ export async function POST(request: NextRequest) {
         if (file && file.size > 0) {
             const bytes = await file.arrayBuffer();
             const buffer = Buffer.from(bytes);
-
-            const filename = `${crypto.randomUUID()}-${file.name}`;
-            const uploadPath = path.join(process.cwd(), "public", "uploads", filename);
-            await writeFile(uploadPath, buffer);
-            photoPath = `/uploads/${filename}`;
+            const base64 = buffer.toString("base64");
+            const mimeType = file.type || "image/jpeg";
+            photoPath = `data:${mimeType};base64,${base64}`;
         }
 
         const doctor = await db.doctor.create({
