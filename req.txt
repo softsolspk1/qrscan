@@ -1,0 +1,32 @@
+I need a Portal which I want to use in World Epilepsy Day. The Portal is about QR Code Generation with Doctor Message and Doctor Photo.
+
+We have 1000 Doctor's Name, Photos and Message. 
+The message is same for all doctors but Every QR  on SCan showing  different Doctor Name and Doctor photo with Our Message.
+
+
+The QR Scan Design is available /qrscan.jpg and after scan the Open Image is /design.jpg 
+
+The /design.jpg  will be visible digital on scanning /qrscan.jpg 
+/design.jpg  - showing doctor's name and photo of doctor which we add in data
+
+/qrsacn.jpg will be generated on every record added of Doctor, Doctor Name and Photo.
+
+
+Admin Panel:
+It also has Admin Panel to Add Records.
+
+Admin Panel with following Options:
+
+Records --- Showing all records added and there is a button to Add Record. There is filter of City
+Scan ---- The Added Records with showing status of SCAN --- No, Yes and also if Yes then number of times Scan done
+QR --- It shows QR generated /qrscan.jpg for all Records. There is Download button for every record. Also there is option to download All generated QR Scans and also option to download selected QR Scans.
+
+
+You can guide me best option to develop it.
+I mean the best to develop in which language and database. 
+This is short term project not a big one so need your guidance in it for best option.
+
+
+Email: admin@softsols.com
+Password: Softsols123
+
