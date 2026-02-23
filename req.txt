@@ -30,3 +30,18 @@ This is short term project not a big one so need your guidance in it for best op
 Email: admin@softsols.com
 Password: Softsols123
 
+https://qrscan-orcin.vercel.app/login
+Email: admin@softsols.com
+Password: Softsols123
+
+
+Connect database on Neon:
+psql 'postgresql://neondb_owner:npg_fS3opYIM2hGj@ep-ancient-sea-ail9lzp8-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
+
+Update it accordingly and test the working and also push to Git 
+
+
+CLOUDNARY CREDENTIALS:
+API environment variable: CLOUDINARY_URL=cloudinary://<your_api_key>:<your_api_secret>@dq78ed4vu
+API KEY: 936269348859326
+API SECRET: cAwiW1mxqDvB-uiJxYmZhN7saX0

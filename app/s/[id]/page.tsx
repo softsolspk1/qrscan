@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import Celebration from "@/components/Celebration";
 
 export default async function ScanPage({
     params,
@@ -52,7 +53,7 @@ export default async function ScanPage({
                   Verified "Perfect" dimensions.
                 */}
                 <div
-                    className="absolute left-1/2 -translate-x-1/2 top-[11.67%] w-[33.5%] h-[20.8%]"
+                    className="absolute left-1/2 -translate-x-1/2 top-[11.67%] w-[33.5%] h-[20.8%] z-10"
                 >
                     <div className="w-full h-full bg-white rounded-full p-[4px] shadow-sm">
                         <div className="w-full h-full rounded-full overflow-hidden relative border-2 border-white">
@@ -67,19 +68,10 @@ export default async function ScanPage({
                 </div>
 
                 {/* 
-                  2. Personalized Greeting Overlay 
-                  Alignment confirmed as perfect at 37.5%.
-                  Background strip/mask removed as per user request.
+                  2. Celebration Overlay 
+                  Handles Sound, Confetti, and Animated Greeting.
                 */}
-                <div
-                    className="absolute left-0 right-0 top-[37.5%] -translate-y-1/2 px-4 text-center"
-                >
-                    <div className="relative inline-block">
-                        <h2 className="relative z-10 text-white text-[1.1rem] sm:text-[1.25rem] font-bold leading-none tracking-tight">
-                            {formattedName}
-                        </h2>
-                    </div>
-                </div>
+                <Celebration name={formattedName} />
             </div>
         </div>
     );
