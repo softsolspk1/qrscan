@@ -61,39 +61,48 @@ export default function Celebration({ name }: CelebrationProps) {
     useEffect(() => {
         setIsClient(true);
 
-        const startPlayback = () => {
-            if (audioRef.current && audioRef.current.paused) {
-                audioRef.current.volume = 1.0;
-                audioRef.current.play()
-                    .then(() => {
-                        console.log("Immediate Play SUCCESS");
-                        cleanup();
-                    })
-                    .catch(e => {
-                        console.warn("Autoplay blocked, waiting for interaction...");
-                    });
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        const handleInteraction = () => {
+            if (audio.paused) {
+                audio.muted = false;
+                audio.volume = 1.0;
+                audio.play().catch(e => console.warn("Interaction play failed:", e));
+            } else if (audio.muted) {
+                audio.muted = false;
+                audio.volume = 1.0;
             }
+            cleanup();
         };
 
-        const events = ["click", "touchstart", "mousedown", "keydown", "scroll", "mousemove"];
+        const events = ["click", "touchstart", "mousedown", "keydown", "scroll"];
         const cleanup = () => {
-            events.forEach(e => window.removeEventListener(e, startPlayback, true));
+            events.forEach(e => window.removeEventListener(e, handleInteraction, true));
         };
 
-        events.forEach(e => window.addEventListener(e, startPlayback, { capture: true, passive: true }));
+        // Aggressive attempt to play immediately (muted)
+        const tryAutoplay = () => {
+            audio.muted = true;
+            audio.play().then(() => {
+                console.log("Muted autoplay success");
+                // Some browsers allow unmuting if it's already playing
+                setTimeout(() => {
+                    audio.muted = false;
+                }, 100);
+            }).catch(() => {
+                console.warn("Muted autoplay blocked");
+            });
+        };
 
-        // Try every 500ms for the first 2 seconds just in case
-        const interval = setInterval(() => {
-            if (audioRef.current && !audioRef.current.paused) {
-                clearInterval(interval);
-                cleanup();
-            } else {
-                startPlayback();
-            }
-        }, 500);
+        events.forEach(e => window.addEventListener(e, handleInteraction, { capture: true, passive: true }));
+
+        // Try immediately and also after a short delay
+        tryAutoplay();
+        const timeout = setTimeout(tryAutoplay, 1000);
 
         return () => {
-            clearInterval(interval);
+            clearTimeout(timeout);
             cleanup();
         };
     }, []);
@@ -101,19 +110,19 @@ export default function Celebration({ name }: CelebrationProps) {
     if (!isClient) return null;
 
     return (
-        <div className="absolute inset-0 z-[40] pointer-events-none">
+        <div className="absolute inset-0 z-[40] pointer-events-auto bg-transparent">
             {/* 
                 Hidden Audio 
-                Using autoPlay and preload="auto" for the fastest possible load.
+                Using muted autoplay as the primary strategy.
             */}
             <audio
                 ref={audioRef}
                 src="/sound.mp3"
                 loop
                 autoPlay
-                muted={false}
+                muted
                 preload="auto"
-                className="hidden"
+                style={{ position: 'absolute', width: 0, height: 0, opacity: 0 }}
             />
 
             {/* Confetti Particles */}
